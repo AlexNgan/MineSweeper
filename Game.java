@@ -56,6 +56,7 @@ public class Game{
   
   //Updates the console after every match.
   public void update(){
+    //REMOVE WHEN DONE.
     printGame(field);
     System.out.println("");
     
@@ -85,6 +86,12 @@ public class Game{
     }
   }
   
+  
+  //On first move, this clears the area around the selected tile.
+  public void clear(int x, int y){
+    
+  }
+  
   //Detects number of mines around a selected tile.
   public int detect(int i, int j){
     int num = 0;
@@ -100,18 +107,22 @@ public class Game{
   
   //Takes user's selected coordinates and adjusts the board.
   public void turn(int x, int y){
-    while(true){
-      if(display[x][y].equals(unknown) == true){
-        display[x][y] = empty;
-        break;
-      }else if(display[x][y].equals(empty) == true){
-        System.out.println("You've already selected this spot!");
-        continue; //UNTESTED.
-      }else if(display[x][y].equals(mine) == true){
-        isDone = true;
-        System.out.println("You've lost!");
-      }
+    if(field[x][y].equals(unknown) == true){           //If the spot hasn't been selected, it is cleared.
+      isDone = false;
+      display[x][y] = empty;
+      field[x][y] = empty;
+    }else if(field[x][y].equals(mine) == true){
+      isDone = true;
+      System.out.println("You've lost!");
+    }else if(display[x][y].equals(empty) == true && field[x][y].equals(empty)){
+      isDone = false;
+      System.out.println("You've already selected this spot!");
     }
+  }
+  
+  //Determines if the game is finished.
+  public Boolean finished(){
+    return isDone;
   }
   
 }
