@@ -4,15 +4,24 @@
  * the Mine Sweeper game to run properly. Two 12x12 arrays
  * are created when the program is run. The arrays are
  * filled with question marks and one is given mines.
+ * This is so that the computer is able to view the array
+ * with mines and track the player's progress, while the 
+ * player is shown the array with question marks only; all
+ * the tiles appear identical to the player so they are
+ * unaware of where the mines are.
  * 
  * Methods in this class update the console, determine if
- * the game is done, and the amount of mines around a tile.
+ * the game is done, if the game has been won, get the value 
+ * of a tile, print the arrays, and the amount of mines 
+ * around a tile.
+ * 
  */
 
 public class Game{
   public String[][] field = new String[12][12];   //12 rows, 12 columns.
   public String[][] display = new String[12][12]; //This is the field that is visible to the player.
   public Boolean isDone = false;
+  public Boolean isWin = false;
   
   private String unknown = " ? ";
   private String mine = " * ";
@@ -64,15 +73,16 @@ public class Game{
     System.out.println("");
   }
   
-  //Places 16 mines at random on the field.
-  public void generateMines(){
-    for(int m = 0; m < 16; m++){
+  //Places n mines at random on the field.
+  public void generateMines(int n){
+    for(int m = 0; m < n; m++){
       //Loops until a mine is placed.
       while(true){
         int x, y = 0;   //Clears vars.
         x = (int)(10*Math.random());
         y = (int)(10*Math.random());
         
+        //So that a mine is placed in a tile visible to the player.
         if(x >= 1 && x <= 10){
           if(y >= 1 && y <= 10){
             //Checks if a mine is present in a spot.
@@ -86,23 +96,50 @@ public class Game{
     }
   }
   
-  
   //On first move, this clears the area around the selected tile.
-  public void clear(int x, int y){
-    
-  }
-  
-  //Detects number of mines around a selected tile.
-  public int detect(int i, int j){
-    int num = 0;
-    for(int x = (i - 1); x < (i + 1); x++){
-      for(int y = (j - 1); y < (j + 1); y++){
-        if(field[x][y].equals(mine)){
-          num++;
+  public void clear(int x, int y){  
+    for(int i = (x - 1); i <= (x + 1); i++){
+      for(int j = (y - 1); j <= (y + 1); j++){
+        if(field[i][j].equals(unknown) == true){
+          display[i][j] = empty;
+          field[i][j] = empty;
         }
       }
     }
-    return num;
+  }
+  
+  //Gets the value of a tile.
+  public String getTile(int x, int y){
+    return field[x][y];
+  }
+  
+  //UNTESTED.
+  //Detects number of mines around a selected tile.
+//  public void detect(int i, int j){
+//    int num = 0;
+//    for(int x = (i - 1); x < (i + 1); x++){
+//      for(int y = (j - 1); y < (j + 1); y++){
+//        if(field[x][y].equals(mine)){
+//          num++;
+//        }
+//      }
+//    }
+//    display[i][j] = num;
+//  }
+  
+  public void detect{
+    for(int x = 1; x < display.length - 1; x++){
+      for(int y = 1; y < display.length - 1; y++){
+        int num = 0;
+        for(int x = (i - 1); x < (i + 1); x++){
+          for(int y = (j - 1); y < (j + 1); y++){
+            if(field[x][y].equals(mine)){
+              num++;
+            }
+          }
+        }
+      }
+    }
   }
   
   //Takes user's selected coordinates and adjusts the board.
@@ -111,18 +148,46 @@ public class Game{
       isDone = false;
       display[x][y] = empty;
       field[x][y] = empty;
-    }else if(field[x][y].equals(mine) == true){
-      isDone = true;
+    }else if(field[x][y].equals(mine) == true){        //If the user selects a mine.
+      isDone = true;                                   //Game is done.
+      isWin = false;                                   //User doesn't win.
       System.out.println("You've lost!");
     }else if(display[x][y].equals(empty) == true && field[x][y].equals(empty)){
       isDone = false;
-      System.out.println("You've already selected this spot!");
+      System.out.println("This tile's been cleared!");
+    }
+  }
+  
+  //Determines if a player has cleared all safe tiles.
+  public void isVictory(){
+    int tile = 0;
+    for(int i = 0; i < field.length; i++){
+      for(int j = 0; j < field[0].length; j++){
+        if(field[i][j].equals(unknown) == true)
+          tile++;
+      }
+    }
+    if(tile != 0)
+      isWin = false;  //If there are still uncleared tiles, player hasn't won.
+    else{
+      isWin = true;
+      isDone = true;
     }
   }
   
   //Determines if the game is finished.
-  public Boolean finished(){
+  public Boolean getDone(){
     return isDone;
+  }
+  
+  //Determines if a player won.
+  public Boolean getWin(){
+    return isWin;
+  }
+  
+  //Displays location of mines at end of game.
+  public void onEnd(){
+    printGame(field);
   }
   
 }
