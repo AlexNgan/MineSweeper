@@ -3,7 +3,10 @@ import java.util.Scanner;
 /* Author: Gloria Ngan
  * 
  * This is the class that actually runs the methods of 
- * the game.
+ * the game. It calls the methods from the Game class
+ * and contains the logic that keeps the game running 
+ * while the player hasn't won or lost.
+ * 
  */ 
 
 public class GameRunner{
@@ -16,25 +19,52 @@ public class GameRunner{
     System.out.println("There are 16 mines. Selecting a tile with a mine will end the game.");
   }
   
-  public static void test(){
+  public static void test(){  
     Game game = new Game();
-    game.generateMines();
+    game.generateMines(16);
     game.update();
-    Scanner scan = new Scanner(System.in);   
+    Scanner scan = new Scanner(System.in); 
     
+    int x, y;
+    System.out.print("Enter an x coordinate.");
+    x = scan.nextInt();
+    System.out.print("Enter a y coordinate.");
+    y = scan.nextInt();
+    
+    /* 
+     * To ensure that the player does not lose on their first move,
+     * the game will move a mine to another tile if the player
+     * happens to select a tile with a mine present.
+     */ 
+    if(game.getTile(x,y).equals(" * ") == true){
+      game.generateMines(1);
+      game.field[x][y] = " ? ";
+    }
+    
+    game.clear(x,y);
+    game.update();
+    
+    //After first move, loops until the game ends.
     while(true){
-      int x, y = -1;
-      System.out.print("Enter an x coordinate.");
-      x = scan.nextInt();
-      System.out.print("Enter a y coordinate.");
-      y = scan.nextInt();
-      
-      if(game.finished() == true){
+      if(game.getDone() == true && game.getWin() == true){    //If the player wins.
+        System.out.println("You win!");
+        game.onEnd();
         break;
-      }else if(game.finished() == false){
+      }else if(game.getDone() == true){                       //If the player loses.
+        game.onEnd(); 
+        break;
+      }else if(game.getDone() == false){                      //While the player hasn't lost or won.
+        x = -1;
+        y = -1;     //Resets values.
+        System.out.print("Enter an x coordinate.");
+        y = scan.nextInt();
+        System.out.print("Enter a y coordinate.");
+        x = scan.nextInt();
         game.turn(x,y);
+        game.isVictory();
         game.update();
       }
+      
     }   
   }
 }
