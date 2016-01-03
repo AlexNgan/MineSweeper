@@ -42,6 +42,7 @@ public class GameRunner{
     }
     
     game.clear(x,y);
+    game.detect();
     game.update();
     
     //After first move, loops until the game ends.
@@ -62,6 +63,7 @@ public class GameRunner{
         x = scan.nextInt();
         game.turn(x,y);
         game.isVictory();
+        game.detect();
         game.update();
       }
       
