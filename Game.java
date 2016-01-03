@@ -1,4 +1,4 @@
-/* Author: Gloria 
+/* Author: Gloria Ngan
  * 
  * This class contains the logic and methods that allow
  * the Mine Sweeper game to run properly. Two 12x12 arrays
@@ -65,10 +65,6 @@ public class Game{
   
   //Updates the console after every match.
   public void update(){
-    //REMOVE WHEN DONE.
-    printGame(field);
-    System.out.println("");
-    
     printGame(display);
     System.out.println("");
   }
@@ -113,30 +109,20 @@ public class Game{
     return field[x][y];
   }
   
-  //UNTESTED.
+  //POTATO HERE.
   //Detects number of mines around a selected tile.
-//  public void detect(int i, int j){
-//    int num = 0;
-//    for(int x = (i - 1); x < (i + 1); x++){
-//      for(int y = (j - 1); y < (j + 1); y++){
-//        if(field[x][y].equals(mine)){
-//          num++;
-//        }
-//      }
-//    }
-//    display[i][j] = num;
-//  }
-  
-  public void detect{
-    for(int x = 1; x < display.length - 1; x++){
-      for(int y = 1; y < display.length - 1; y++){
-        int num = 0;
-        for(int x = (i - 1); x < (i + 1); x++){
-          for(int y = (j - 1); y < (j + 1); y++){
-            if(field[x][y].equals(mine)){
-              num++;
+  public void detect(){
+    for(int x = 1; x < display.length - 2; x++){     //Cycles thru the entire visible display.
+      for(int y = 1; y < display.length - 2; y++){
+        if(field[x][y].equals(empty) == true){
+          int nums = 0;                              //Var for counting mines.
+          for(int i = (x - 1); i <= (x + 1); i++){
+            for(int j = (y - 1); j <= (y + 1); j++){
+              if(field[i][j].equals(mine) == true)
+                nums++;                              //Incrememnts nums var when a mine is detected.
             }
           }
+          display[x][y] = " " + nums + " ";
         }
       }
     }
@@ -160,11 +146,11 @@ public class Game{
   
   //Determines if a player has cleared all safe tiles.
   public void isVictory(){
-    int tile = 0;
+    int tile = 0;                                      //Var for the number of uncleared tiles in the array.
     for(int i = 0; i < field.length; i++){
       for(int j = 0; j < field[0].length; j++){
         if(field[i][j].equals(unknown) == true)
-          tile++;
+          tile++;                                      //If there are uncleared tiles, var is incremented.
       }
     }
     if(tile != 0)
