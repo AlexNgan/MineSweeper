@@ -109,7 +109,6 @@ public class Game{
     return field[x][y];
   }
   
-  //POTATO HERE.
   //Detects number of mines around a selected tile.
   public void detect(){
     for(int x = 1; x < display.length - 2; x++){     //Cycles thru the entire visible display.
