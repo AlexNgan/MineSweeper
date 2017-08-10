@@ -1,4 +1,4 @@
-/* Author: Gloria Ngan
+/* Author: Alex
  * 
  * This class contains the logic and methods that allow
  * the Mine Sweeper game to run properly. Two 12x12 arrays
