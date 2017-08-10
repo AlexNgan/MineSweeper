@@ -1,5 +1,5 @@
 
-/* Author: Gloria Ngan
+/* Author: Alex
  * 
  * This is the main class for the mine sweeper game.
  * Requires Game and GameRunner. 
