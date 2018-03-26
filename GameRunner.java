@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-/* Author: Alex
+/* Author: Mortyyy
  * 
  * This is the class that actually runs the methods of 
  * the game. It calls the methods from the Game class
